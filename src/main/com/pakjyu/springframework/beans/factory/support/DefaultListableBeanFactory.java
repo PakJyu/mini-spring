@@ -1,7 +1,7 @@
-package com.pakjyu.springframwork.beans.factory.support;
+package com.pakjyu.springframework.beans.factory.support;
 
-import com.pakjyu.springframwork.beans.factory.BeansException;
-import com.pakjyu.springframwork.beans.factory.factory.BeanDefinition;
+import com.pakjyu.springframework.beans.factory.BeansException;
+import com.pakjyu.springframework.beans.factory.factory.BeanDefinition;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

@@ -1,4 +1,4 @@
-package com.pakjyu.springframwork.beans.factory;
+package com.pakjyu.springframework.beans.factory;
 
 public class BeansException extends Throwable {
     public BeansException(String s) {
