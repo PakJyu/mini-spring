@@ -7,9 +7,15 @@ public class UserService {
     public UserService() {
     }
 
-    public void queryUserInfo() {
+    public UserService(String uId) {
+        this.uId = uId;
+    }
+
+    public String queryUserInfo() {
+        String userName = "";
         if (userDao != null) {
-            System.out.println("userName = " + userDao.queryUserName(uId));
+            userName = userDao.queryUserName(uId);
+            System.out.println("userName = " + userName);
         }
 
         //适配存量案例
@@ -17,5 +23,6 @@ public class UserService {
             System.out.println("uId = " + uId);
         }
 
+        return userName;
     }
 }

@@ -1,6 +1,5 @@
 package com.pakjyu.springframework.test;
 
-import com.pakjyu.springframework.beans.factory.PropertiesValue;
 import com.pakjyu.springframework.beans.factory.PropertiesValues;
 import com.pakjyu.springframework.beans.factory.factory.BeanReference;
 import com.pakjyu.springframework.test.bean.UserDao;
@@ -10,7 +9,7 @@ import com.pakjyu.springframework.beans.factory.factory.BeanDefinition;
 import com.pakjyu.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.junit.Test;
 
-public class ApiTest {
+public class InstantiateBeanTest {
 
     /**
      * 测试单例
@@ -83,5 +82,7 @@ public class ApiTest {
         UserService userService1 = (UserService) beanFactory.getBean("userService");
         userService1.queryUserInfo();
     }
+
+
 
 }

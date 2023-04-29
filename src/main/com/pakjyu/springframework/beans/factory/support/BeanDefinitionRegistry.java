@@ -5,4 +5,5 @@ import com.pakjyu.springframework.beans.factory.BeanFactory;
 
 public interface BeanDefinitionRegistry {
     public abstract BeanFactory registryBeanDefinition(String beanName, BeanDefinition beanDefinition);
+    public abstract boolean containsBeanDefinition(String beanName);
 }
