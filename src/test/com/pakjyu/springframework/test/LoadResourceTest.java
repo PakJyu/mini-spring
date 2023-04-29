@@ -52,11 +52,11 @@ public class LoadResourceTest {
         DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
 
         // 2. 读取配置文件&注册Bean
-        XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(beanFactory);
+        XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(beanFactory,resourceLoader);
         reader.loadBeanDefinitions("classpath:spring.xml");
 
         // 3. 获取Bean对象调用方法
-        UserService userService = (UserService) beanFactory.getBean("userService", UserService.class);
+        UserService userService = (UserService) beanFactory.getBean("userService");
         userService.queryUserInfo();
     }
 }

@@ -4,6 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.XmlUtil;
 import com.pakjyu.springframework.beans.factory.BeansException;
 import com.pakjyu.springframework.beans.factory.PropertiesValue;
+import com.pakjyu.springframework.beans.factory.PropertiesValues;
 import com.pakjyu.springframework.beans.factory.factory.dict.BeanXmlDict;
 import com.pakjyu.springframework.beans.factory.factory.dict.BeanXmlDict.*;
 import com.pakjyu.springframework.beans.factory.support.AbstractBeanDefinitionReader;
@@ -80,7 +81,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
                 beanName = StrUtil.isNotEmpty(xmlBeanId) ? xmlBeanId : xmlBeanName;
             }
 
-            BeanDefinition beanDefinition = new BeanDefinition(beanClass);
+            BeanDefinition beanDefinition = new BeanDefinition(beanClass,new PropertiesValues());
 
             for (int i1 = 0; i1 < xmlBean.getChildNodes().getLength(); i1++) {
                 NodeList childNodes1 = xmlBean.getChildNodes();
