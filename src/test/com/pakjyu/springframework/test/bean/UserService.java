@@ -3,6 +3,8 @@ package com.pakjyu.springframework.test.bean;
 public class UserService {
     private String uId;
     private UserDao userDao;
+    private String company;
+    private String location;
 
     public UserService() {
     }
@@ -24,5 +26,9 @@ public class UserService {
         }
 
         return userName;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 }

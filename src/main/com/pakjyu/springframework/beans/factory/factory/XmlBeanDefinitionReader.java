@@ -3,15 +3,14 @@ package com.pakjyu.springframework.beans.factory.factory;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.XmlUtil;
 import com.pakjyu.springframework.beans.factory.BeansException;
-import com.pakjyu.springframework.beans.factory.PropertiesValue;
-import com.pakjyu.springframework.beans.factory.PropertiesValues;
+import com.pakjyu.springframework.beans.factory.PropertyValue;
+import com.pakjyu.springframework.beans.factory.PropertyValues;
 import com.pakjyu.springframework.beans.factory.factory.dict.BeanXmlDict;
-import com.pakjyu.springframework.beans.factory.factory.dict.BeanXmlDict.*;
+import com.pakjyu.springframework.beans.factory.factory.dict.BeanXmlDict.BeanPropertyXmlDict;
 import com.pakjyu.springframework.beans.factory.support.AbstractBeanDefinitionReader;
 import com.pakjyu.springframework.beans.factory.support.BeanDefinitionRegistry;
 import com.pakjyu.springframework.io.Resource;
 import com.pakjyu.springframework.io.ResourceLoader;
-import com.pakjyu.springframework.util.Assert;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -20,7 +19,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
-import java.util.function.Supplier;
 
 public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 
@@ -81,7 +79,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
                 beanName = StrUtil.isNotEmpty(xmlBeanId) ? xmlBeanId : xmlBeanName;
             }
 
-            BeanDefinition beanDefinition = new BeanDefinition(beanClass,new PropertiesValues());
+            BeanDefinition beanDefinition = new BeanDefinition(beanClass, new PropertyValues());
 
             for (int i1 = 0; i1 < xmlBean.getChildNodes().getLength(); i1++) {
                 NodeList childNodes1 = xmlBean.getChildNodes();
@@ -95,7 +93,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
                 String attrRef = property.getAttribute(BeanPropertyXmlDict.REF);
 
                 Object value = StrUtil.isNotEmpty(attrRef) ? new BeanReference(attrRef) : attrValue;
-                beanDefinition.getPropertiesValues().addPropertiesValue(new PropertiesValue(attrName, value));
+                beanDefinition.getPropertyValues().addPropertyValue(new PropertyValue(attrName, value));
             }
 
             if (getRegistry().containsBeanDefinition(beanName)) {
@@ -104,6 +102,12 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 
             getRegistry().registryBeanDefinition(beanName, beanDefinition);
 
+        }
+    }
+
+    public void loadBeanDefinitions(String[] configLocations) {
+        for (String configLocation : configLocations) {
+            this.loadBeanDefinitions(configLocation);
         }
     }
 }

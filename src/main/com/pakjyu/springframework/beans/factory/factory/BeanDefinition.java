@@ -1,17 +1,17 @@
 package com.pakjyu.springframework.beans.factory.factory;
 
-import com.pakjyu.springframework.beans.factory.PropertiesValues;
+import com.pakjyu.springframework.beans.factory.PropertyValues;
 
 /**
  * Bean定义类
  */
 public class BeanDefinition {
     private Class beanClass;
-    private PropertiesValues propertiesValues;
+    private PropertyValues propertyValues;
 
-    public BeanDefinition(Class beanClass, PropertiesValues propertiesValues) {
+    public BeanDefinition(Class beanClass, PropertyValues propertyValues) {
         this.beanClass = beanClass;
-        this.propertiesValues = propertiesValues;
+        this.propertyValues = propertyValues;
     }
 
     public BeanDefinition(Class beanClass) {
@@ -22,7 +22,7 @@ public class BeanDefinition {
         return beanClass;
     }
 
-    public PropertiesValues getPropertiesValues() {
-        return propertiesValues;
+    public PropertyValues getPropertyValues() {
+        return propertyValues;
     }
 }

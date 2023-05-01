@@ -1,12 +1,12 @@
 package com.pakjyu.springframework.test;
 
-import com.pakjyu.springframework.beans.factory.PropertiesValues;
+import com.pakjyu.springframework.beans.factory.BeansException;
+import com.pakjyu.springframework.beans.factory.PropertyValues;
+import com.pakjyu.springframework.beans.factory.factory.BeanDefinition;
 import com.pakjyu.springframework.beans.factory.factory.BeanReference;
+import com.pakjyu.springframework.beans.factory.support.DefaultListableBeanFactory;
 import com.pakjyu.springframework.test.bean.UserDao;
 import com.pakjyu.springframework.test.bean.UserService;
-import com.pakjyu.springframework.beans.factory.BeansException;
-import com.pakjyu.springframework.beans.factory.factory.BeanDefinition;
-import com.pakjyu.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.junit.Test;
 
 public class InstantiateBeanTest {
@@ -67,12 +67,12 @@ public class InstantiateBeanTest {
         //2、注册Bean
         beanFactory.registryBeanDefinition("userDao", new BeanDefinition(UserDao.class));
 
-        PropertiesValues propertiesValues = new PropertiesValues()
-                .addPropertiesValue("uId", "10001")
-                .addPropertiesValue("userDao", new BeanReference("userDao"));
+        PropertyValues propertyValues = new PropertyValues()
+                .addPropertyValue("uId", "10001")
+                .addPropertyValue("userDao", new BeanReference("userDao"));
 
         //2、注册Bean
-        beanFactory.registryBeanDefinition("userService", new BeanDefinition(UserService.class,propertiesValues));
+        beanFactory.registryBeanDefinition("userService", new BeanDefinition(UserService.class, propertyValues));
 
         //3、第一次获取Bean
         UserService userService = (UserService) beanFactory.getBean("userService");

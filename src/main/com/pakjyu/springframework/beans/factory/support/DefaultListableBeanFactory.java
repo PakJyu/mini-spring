@@ -1,12 +1,15 @@
 package com.pakjyu.springframework.beans.factory.support;
 
 import com.pakjyu.springframework.beans.factory.BeansException;
+import com.pakjyu.springframework.beans.factory.ConfigurableBeanFactory;
+import com.pakjyu.springframework.beans.factory.factory.AbstractAutowireCapableBeanFactory;
 import com.pakjyu.springframework.beans.factory.factory.BeanDefinition;
+import com.pakjyu.springframework.beans.factory.factory.config.BeanPostProcessor;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFactory implements BeanDefinitionRegistry {
+public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFactory implements BeanDefinitionRegistry, ConfigurableBeanFactory {
 
     private Map<String, BeanDefinition> beanDefinitionMap = new ConcurrentHashMap<>();
 
@@ -26,5 +29,10 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
         BeanDefinition beanDefinition = beanDefinitionMap.get(beanName);
         if (beanDefinition == null) throw new BeansException("No bean named '" + beanName + "' is defined");
         return beanDefinition;
+    }
+
+    @Override
+    public void addBeanPostProcessor(BeanPostProcessor beanPostProcessor) {
+
     }
 }
