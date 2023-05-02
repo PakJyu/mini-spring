@@ -5,9 +5,13 @@ import com.pakjyu.springframework.beans.factory.BeansException;
 import com.pakjyu.springframework.beans.factory.factory.BeanDefinition;
 import com.pakjyu.springframework.beans.factory.factory.config.BeanPostProcessor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry implements BeanFactory {
+
+    private final List<BeanPostProcessor> beanPostProcessors = new ArrayList<>();
+
     @Override
     public Object getBean(String beanName, Object... args) throws BeansException {
         Object singletonBean = getSingletonBean(beanName);
@@ -30,6 +34,6 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
     public abstract BeanDefinition getBeanDefinition(String beanName) throws BeansException;
 
     public List<BeanPostProcessor> getBeanPostProcessors() {
-        return null;
+        return this.beanPostProcessors;
     }
 }

@@ -11,6 +11,7 @@ import com.pakjyu.springframework.beans.factory.support.AbstractBeanDefinitionRe
 import com.pakjyu.springframework.beans.factory.support.BeanDefinitionRegistry;
 import com.pakjyu.springframework.io.Resource;
 import com.pakjyu.springframework.io.ResourceLoader;
+import com.pakjyu.springframework.util.Apply;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -74,9 +75,9 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
             String beanName;
 
             if (StrUtil.isEmpty(xmlBeanName)) {
-                beanName = StrUtil.lowerFirst(beanClass.getSimpleName());
+                beanName = Apply.beanNameOfClass(beanClass);
             } else {
-                beanName = StrUtil.isNotEmpty(xmlBeanId) ? xmlBeanId : xmlBeanName;
+                beanName = Apply.beanNameOfClass(xmlBeanId,xmlBeanName);
             }
 
             BeanDefinition beanDefinition = new BeanDefinition(beanClass, new PropertyValues());

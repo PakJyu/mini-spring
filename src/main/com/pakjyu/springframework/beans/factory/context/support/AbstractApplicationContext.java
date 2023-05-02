@@ -60,7 +60,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 
     @Override
     public <T> Map<String, T> getBeansOfType(Class<T> type) {
-        return null;
+        return getBeanFactory().getBeansOfType(type);
     }
 
     @Override

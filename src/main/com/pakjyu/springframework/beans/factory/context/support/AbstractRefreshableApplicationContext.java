@@ -28,6 +28,6 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
      */
     @Override
     protected ConfigurableListableBeanFactory getBeanFactory() {
-        return (ConfigurableListableBeanFactory) defaultListableBeanFactory;
+        return defaultListableBeanFactory;
     }
 }
