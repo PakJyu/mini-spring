@@ -1,11 +1,7 @@
 package com.pakjyu.springframework.beans.factory.support;
 
-import cn.hutool.core.lang.hash.Hash;
-import cn.hutool.core.util.StrUtil;
 import com.pakjyu.springframework.beans.factory.BeansException;
-import com.pakjyu.springframework.beans.factory.ConfigurableBeanFactory;
 import com.pakjyu.springframework.beans.factory.ConfigurableListableBeanFactory;
-import com.pakjyu.springframework.beans.factory.PropertyValues;
 import com.pakjyu.springframework.beans.factory.factory.AbstractAutowireCapableBeanFactory;
 import com.pakjyu.springframework.beans.factory.factory.BeanDefinition;
 import com.pakjyu.springframework.beans.factory.factory.config.BeanPostProcessor;
@@ -15,8 +11,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.*;
-import java.util.stream.Stream;
 
 public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFactory implements BeanDefinitionRegistry, ConfigurableListableBeanFactory {
 
@@ -72,5 +66,10 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
     @Override
     public String[] getBeanDefinitionNames() {
         return null;
+    }
+
+    @Override
+    public void destroySingletons() {
+        super.destroySingletons();
     }
 }

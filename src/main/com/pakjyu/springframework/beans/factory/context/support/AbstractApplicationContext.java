@@ -63,6 +63,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
         return getBeanFactory().getBeansOfType(type);
     }
 
+    //todo
     @Override
     public String[] getBeanDefinitionNames() {
         return new String[0];
@@ -71,5 +72,15 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
     @Override
     public Object getBean(String beanName, Object... args) throws BeansException {
         return getBeanFactory().getBean(beanName, args);
+    }
+
+    @Override
+    public void registerShutdownHook() {
+        Runtime.getRuntime().addShutdownHook(new Thread(this::close));
+    }
+
+    @Override
+    public void close() {
+        getBeanFactory().destroySingletons();
     }
 }
