@@ -9,7 +9,7 @@ public class UserService implements InitializingBean, DisposableBean, BeanNameAw
     private String userName;
     private String company;
     private String location;
-    private UserDao userDao;
+    private IUserDao userDao;
 
     public UserService() {
     }
@@ -73,11 +73,11 @@ public class UserService implements InitializingBean, DisposableBean, BeanNameAw
         this.location = location;
     }
 
-    public UserDao getUserDao() {
+    public IUserDao getUserDao() {
         return userDao;
     }
 
-    public void setUserDao(UserDao userDao) {
+    public void setUserDao(IUserDao userDao) {
         this.userDao = userDao;
     }
 

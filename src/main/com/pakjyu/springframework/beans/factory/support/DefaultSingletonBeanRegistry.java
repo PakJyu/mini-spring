@@ -12,6 +12,8 @@ public class DefaultSingletonBeanRegistry implements SingletonBeanRegistry {
     private Map<String, Object> singletonBeans = new HashMap<>();
     private final Map<String, DisposableBean> disposableBeans = new LinkedHashMap<>();
 
+    protected static final Object NULL_OBJECT = new Object();
+
     @Override
     public Object getSingletonBean(String beanName) {
         return this.singletonBeans.get(beanName);

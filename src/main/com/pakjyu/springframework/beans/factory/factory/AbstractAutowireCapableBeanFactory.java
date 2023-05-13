@@ -37,12 +37,19 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
         // 注册实现了 DisposableBean 接口的 Bean 对象
         registerDisposableBeanIfNecessary(beanName, bean, beanDefinition);
 
-        //注入容器
-        addSingletonBean(beanName, bean);
+        // 如果单例
+        if (beanDefinition.isSingleton()) {
+            //注入容器
+            addSingletonBean(beanName, bean);
+        }
+
         return bean;
     }
 
     protected void registerDisposableBeanIfNecessary(String beanName, Object bean, BeanDefinition beanDefinition) {
+        // 不是单例的Bean不执行销毁方法
+        if (!beanDefinition.isSingleton()) return;
+
         boolean isInstanceofDisposableBean = DisposableBeanAdapter.isInstanceofDisposableBean.test(bean);
         boolean isMethodNameNotEmpty = DisposableBeanAdapter.isMethodNameNotEmpty.test(beanDefinition.getDestroyMethodName());
 
@@ -80,18 +87,13 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
             //如果是BeanReference的实例
             if (value instanceof BeanReference) {
                 //从容器实例化/获取属性值
-                value = getBean(name);
+                value = getBean(((BeanReference) value).getBeanName());
             }
             BeanUtil.setFieldValue(bean, name, value);
         }
     }
 
     private Object initializeBean(String beanName, Object bean, BeanDefinition beanDefinition) {
-
-        Predicate<Object> isAware = (o) -> o instanceof Aware;
-        Predicate<Object> isBeanNameAware = (o) -> o instanceof BeanNameAware;
-        Predicate<Object> isBeanFactoryAware = (o) -> o instanceof BeanFactoryAware;
-        Predicate<Object> isBeanClassLoaderAware = (o) -> o instanceof BeanClassLoaderAware;
 
         if (bean instanceof Aware) {
             if (bean instanceof BeanNameAware) ((BeanNameAware) bean).setBeanName(beanName);
@@ -102,7 +104,6 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
         // 1. 执行 BeanPostProcessor Before 处理
         Object wrappedBean = applyBeanPostProcessorsBeforeInitialization(bean, beanName);
 
-        // 待完成内容：invokeInitMethods(beanName, wrappedBean, beanDefinition);
         try {
             invokeInitMethods(beanName, wrappedBean, beanDefinition);
         } catch (Exception e) {
@@ -124,12 +125,11 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
         String initMethodName = beanDefinition.getInitMethodName();
         if (StrUtil.isNotEmpty(initMethodName)) {
 
-            Method initMethod = beanDefinition.getClass().getMethod(initMethodName);
+            Method initMethod = beanDefinition.getBeanClass().getMethod(initMethodName);
             Assert.notNull(initMethod, new IllegalArgumentException("Could not find an init method named" + initMethodName));
 
             initMethod.invoke(wrappedBean);
         }
-
 
     }
 

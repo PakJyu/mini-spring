@@ -1,11 +1,20 @@
 package com.pakjyu.springframework.beans.factory.factory;
 
 import com.pakjyu.springframework.beans.factory.PropertyValues;
+import com.pakjyu.springframework.beans.factory.factory.dict.BeanDict;
 
 /**
  * Bean定义类
  */
 public class BeanDefinition {
+
+    String SCOPE_SINGLETON = BeanDict.SCOPE_SINGLETON;
+    String SCOPE_PROTOTYPE = BeanDict.SCOPE_PROTOTYPE;
+
+    private String scope = SCOPE_SINGLETON;
+    private boolean singleton = true;
+    private boolean prototype = false;
+
     private Class beanClass;
     private PropertyValues propertyValues;
 
@@ -17,6 +26,28 @@ public class BeanDefinition {
     private String initMethodName;
     private String destroyMethodName;
 
+    public boolean isSingleton() {
+        return singleton;
+    }
+
+    public void setSingleton(boolean singleton) {
+        this.singleton = singleton;
+    }
+
+    public boolean isPrototype() {
+        return prototype;
+    }
+
+    public void setPrototype(boolean prototype) {
+        this.prototype = prototype;
+    }
+
+    public void setScope(String scope) {
+        this.scope = scope;
+        this.singleton = SCOPE_SINGLETON.equals(scope);
+        this.prototype = SCOPE_PROTOTYPE.equals(scope);
+
+    }
     public String getInitMethodName() {
         return initMethodName;
     }

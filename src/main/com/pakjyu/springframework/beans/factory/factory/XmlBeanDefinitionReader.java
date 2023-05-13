@@ -5,8 +5,8 @@ import cn.hutool.core.util.XmlUtil;
 import com.pakjyu.springframework.beans.factory.BeansException;
 import com.pakjyu.springframework.beans.factory.PropertyValue;
 import com.pakjyu.springframework.beans.factory.PropertyValues;
-import com.pakjyu.springframework.beans.factory.factory.dict.BeanXmlDict;
-import com.pakjyu.springframework.beans.factory.factory.dict.BeanXmlDict.BeanPropertyXmlDict;
+import com.pakjyu.springframework.beans.factory.factory.dict.BeanDict;
+import com.pakjyu.springframework.beans.factory.factory.dict.BeanDict.BeanPropertyDict;
 import com.pakjyu.springframework.beans.factory.support.AbstractBeanDefinitionReader;
 import com.pakjyu.springframework.beans.factory.support.BeanDefinitionRegistry;
 import com.pakjyu.springframework.io.Resource;
@@ -64,34 +64,44 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
         for (int i = 0; i < childNodes.getLength(); i++) {
 
             if (!(isInstanceOfElement.test(childNodes.item(i)))) continue;
-            if (!(isEqual.test(BeanXmlDict.NODENAME, childNodes.item(i).getNodeName()))) continue;
+            if (!(isEqual.test(BeanDict.NODENAME, childNodes.item(i).getNodeName()))) continue;
 
             Element xmlBean = (Element) childNodes.item(i);
-            String xmlBeanId = xmlBean.getAttribute(BeanXmlDict.ID);
-            String xmlBeanName = xmlBean.getAttribute(BeanXmlDict.NAME);
-            String xmlBeanClassName = xmlBean.getAttribute(BeanXmlDict.CLASSNAME);
+            String xmlBeanId = xmlBean.getAttribute(BeanDict.ID);
+            String xmlBeanName = xmlBean.getAttribute(BeanDict.NAME);
+            String xmlBeanClassName = xmlBean.getAttribute(BeanDict.CLASSNAME);
+
+            String initMethod = xmlBean.getAttribute(BeanDict.INIT_METHOD);
+            String destroyMethodName = xmlBean.getAttribute(BeanDict.DESTROY_METHOD);
+            String beanScope = xmlBean.getAttribute(BeanDict.SCOPE);
 
             Class<?> beanClass = Class.forName(xmlBeanClassName);
             String beanName;
 
-            if (StrUtil.isEmpty(xmlBeanName)) {
+            if (StrUtil.isEmpty(xmlBeanId)) {
                 beanName = Apply.beanNameOfClass(beanClass);
             } else {
                 beanName = Apply.beanNameOfClass(xmlBeanId,xmlBeanName);
             }
 
             BeanDefinition beanDefinition = new BeanDefinition(beanClass, new PropertyValues());
+            beanDefinition.setInitMethodName(initMethod);
+            beanDefinition.setDestroyMethodName(destroyMethodName);
+
+            if (StrUtil.isNotEmpty(beanScope)) {
+                beanDefinition.setScope(beanScope);
+            }
 
             for (int i1 = 0; i1 < xmlBean.getChildNodes().getLength(); i1++) {
                 NodeList childNodes1 = xmlBean.getChildNodes();
 
                 if (!(isInstanceOfElement.test(childNodes1.item(i1)))) continue;
-                if (!(isEqual.test(BeanPropertyXmlDict.NODENAME, childNodes1.item(i).getNodeName()))) continue;
+                if (!(isEqual.test(BeanPropertyDict.NODENAME, childNodes1.item(i).getNodeName()))) continue;
 
                 Element property = (Element) childNodes1.item(i1);
-                String attrName = property.getAttribute(BeanPropertyXmlDict.NAME);
-                String attrValue = property.getAttribute(BeanPropertyXmlDict.VALUE);
-                String attrRef = property.getAttribute(BeanPropertyXmlDict.REF);
+                String attrName = property.getAttribute(BeanPropertyDict.NAME);
+                String attrValue = property.getAttribute(BeanPropertyDict.VALUE);
+                String attrRef = property.getAttribute(BeanPropertyDict.REF);
 
                 Object value = StrUtil.isNotEmpty(attrRef) ? new BeanReference(attrRef) : attrValue;
                 beanDefinition.getPropertyValues().addPropertyValue(new PropertyValue(attrName, value));
