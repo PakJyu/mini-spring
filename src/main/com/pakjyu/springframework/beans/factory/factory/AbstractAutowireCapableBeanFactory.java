@@ -2,10 +2,8 @@ package com.pakjyu.springframework.beans.factory.factory;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
-import com.pakjyu.springframework.beans.factory.BeansException;
-import com.pakjyu.springframework.beans.factory.InitializingBean;
-import com.pakjyu.springframework.beans.factory.PropertyValue;
-import com.pakjyu.springframework.beans.factory.PropertyValues;
+import com.pakjyu.springframework.beans.factory.*;
+import com.pakjyu.springframework.beans.factory.context.ApplicationContextAware;
 import com.pakjyu.springframework.beans.factory.factory.config.BeanPostProcessor;
 import com.pakjyu.springframework.beans.factory.support.AbstractBeanFactory;
 import com.pakjyu.springframework.beans.factory.support.CglibSubclassingInstantiationStrategy;
@@ -16,6 +14,7 @@ import com.pakjyu.springframework.util.Assert;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.function.Predicate;
 
 public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFactory implements AutowireCapableBeanFactory {
     private InstantiationStrategy instantiationStrategy = new CglibSubclassingInstantiationStrategy();
@@ -88,6 +87,18 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
     }
 
     private Object initializeBean(String beanName, Object bean, BeanDefinition beanDefinition) {
+
+        Predicate<Object> isAware = (o) -> o instanceof Aware;
+        Predicate<Object> isBeanNameAware = (o) -> o instanceof BeanNameAware;
+        Predicate<Object> isBeanFactoryAware = (o) -> o instanceof BeanFactoryAware;
+        Predicate<Object> isBeanClassLoaderAware = (o) -> o instanceof BeanClassLoaderAware;
+
+        if (bean instanceof Aware) {
+            if (bean instanceof BeanNameAware) ((BeanNameAware) bean).setBeanName(beanName);
+            if (bean instanceof BeanFactoryAware) ((BeanFactoryAware) bean).setBeanFactory(this);
+            if (bean instanceof BeanClassLoaderAware) ((BeanClassLoaderAware) bean).setBeanClassLoader(getBeanClassLoader());
+        }
+
         // 1. 执行 BeanPostProcessor Before 处理
         Object wrappedBean = applyBeanPostProcessorsBeforeInitialization(bean, beanName);
 

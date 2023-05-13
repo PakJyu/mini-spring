@@ -3,6 +3,11 @@ package com.pakjyu.springframework.util;
 import java.util.function.Predicate;
 
 public class ClassUtils {
+
+    public static ClassLoader getDefaultClassLoader(ClassLoader classLoader) {
+        return classLoader != null ? classLoader : getDefaultClassLoader();
+    }
+
     public static ClassLoader getDefaultClassLoader() {
         ClassLoader cl = null;
         Predicate<ClassLoader> isNull = classLoader -> classLoader == null;
@@ -11,7 +16,6 @@ public class ClassUtils {
             cl = Thread.currentThread().getContextClassLoader();
         } catch (Throwable ex) {
         }
-
         if (isNull.test(cl)) {
             cl = ClassUtils.class.getClassLoader();
             if (isNull.test(cl)) {
@@ -21,8 +25,6 @@ public class ClassUtils {
                 }
             }
         }
-
         return cl;
-
     }
 }

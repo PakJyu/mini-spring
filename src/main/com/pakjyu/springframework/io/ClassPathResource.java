@@ -18,7 +18,7 @@ public class ClassPathResource implements Resource {
     public ClassPathResource(String path, ClassLoader classLoader) {
         Assert.notNull(path, new IllegalArgumentException("Path must be null"));
         this.path = path;
-        this.classLoader = classLoader != null ? classLoader : ClassUtils.getDefaultClassLoader();
+        this.classLoader = ClassUtils.getDefaultClassLoader(classLoader);
     }
 
     @Override

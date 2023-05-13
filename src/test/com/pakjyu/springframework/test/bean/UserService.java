@@ -1,9 +1,10 @@
 package com.pakjyu.springframework.test.bean;
 
-import com.pakjyu.springframework.beans.factory.DisposableBean;
-import com.pakjyu.springframework.beans.factory.InitializingBean;
+import com.pakjyu.springframework.beans.factory.*;
+import com.pakjyu.springframework.beans.factory.context.ApplicationContext;
+import com.pakjyu.springframework.beans.factory.context.ApplicationContextAware;
 
-public class UserService implements InitializingBean, DisposableBean {
+public class UserService implements InitializingBean, DisposableBean, BeanNameAware, BeanFactoryAware, BeanClassLoaderAware, ApplicationContextAware {
     private String uId;
     private String userName;
     private String company;
@@ -88,5 +89,25 @@ public class UserService implements InitializingBean, DisposableBean {
     @Override
     public void afterPropertiesSet() {
         System.out.println("执行：UserService.afterPropertiesSet");
+    }
+
+    @Override
+    public void setBeanClassLoader(ClassLoader classLoader) {
+        System.out.println("classLoader = " + classLoader);
+    }
+
+    @Override
+    public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
+        System.out.println("beanFactory = " + beanFactory);
+    }
+
+    @Override
+    public void setBeanName(String name) {
+        System.out.println("name = " + name);
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        System.out.println("applicationContext = " + applicationContext);
     }
 }
