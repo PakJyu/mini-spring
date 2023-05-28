@@ -19,11 +19,10 @@ public class DefaultSingletonBeanRegistry implements SingletonBeanRegistry {
         return this.singletonBeans.get(beanName);
     }
 
-    protected void addSingletonBean(String name, Object object) {
+    public void registerSingleton(String name, Object object) {
         singletonBeans.put(name, object);
     }
 
-    //todo
     public void destroySingletons() {
         disposableBeans.forEach((beanName, disposableBean) -> {
             try {

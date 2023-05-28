@@ -18,4 +18,6 @@
 
     <bean class="com.pakjyu.springframework.test.common.MyBeanPostProcessor"/>
     <bean class="com.pakjyu.springframework.test.common.MyBeanFactoryPostProcessor"/>
+    <bean class="com.pakjyu.springframework.test.common.CustomListener"/>
+
 </beans>

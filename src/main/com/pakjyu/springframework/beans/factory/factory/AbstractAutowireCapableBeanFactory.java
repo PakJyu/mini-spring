@@ -3,7 +3,6 @@ package com.pakjyu.springframework.beans.factory.factory;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.pakjyu.springframework.beans.factory.*;
-import com.pakjyu.springframework.beans.factory.context.ApplicationContextAware;
 import com.pakjyu.springframework.beans.factory.factory.config.BeanPostProcessor;
 import com.pakjyu.springframework.beans.factory.support.AbstractBeanFactory;
 import com.pakjyu.springframework.beans.factory.support.CglibSubclassingInstantiationStrategy;
@@ -14,7 +13,6 @@ import com.pakjyu.springframework.util.Assert;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.List;
-import java.util.function.Predicate;
 
 public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFactory implements AutowireCapableBeanFactory {
     private InstantiationStrategy instantiationStrategy = new CglibSubclassingInstantiationStrategy();
@@ -40,7 +38,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
         // 如果单例
         if (beanDefinition.isSingleton()) {
             //注入容器
-            addSingletonBean(beanName, bean);
+            registerSingleton(beanName, bean);
         }
 
         return bean;
