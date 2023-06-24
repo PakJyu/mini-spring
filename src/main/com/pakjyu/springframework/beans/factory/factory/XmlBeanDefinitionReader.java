@@ -96,7 +96,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
                 NodeList childNodes1 = xmlBean.getChildNodes();
 
                 if (!(isInstanceOfElement.test(childNodes1.item(i1)))) continue;
-                if (!(isEqual.test(BeanPropertyDict.NODENAME, childNodes1.item(i).getNodeName()))) continue;
+                if (!(isEqual.test(BeanPropertyDict.NODENAME, childNodes1.item(i1).getNodeName()))) continue;
 
                 Element property = (Element) childNodes1.item(i1);
                 String attrName = property.getAttribute(BeanPropertyDict.NAME);

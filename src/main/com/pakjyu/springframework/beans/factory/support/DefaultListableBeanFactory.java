@@ -10,6 +10,7 @@ import com.pakjyu.springframework.util.Apply;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFactory implements BeanDefinitionRegistry, ConfigurableListableBeanFactory {
@@ -35,29 +36,19 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
     }
 
     @Override
-    public void preInstantiateSingletons() throws BeansException {
-
-    }
-
-    @Override
-    public void addBeanPostProcessor(BeanPostProcessor beanPostProcessor) {
-        getBeanPostProcessors().add(beanPostProcessor);
-    }
+    public void preInstantiateSingletons() throws BeansException {}
 
     @Override
     public <T> Map<String, T> getBeansOfType(Class<T> type) {
+        Map<String, T> result = new HashMap<>();
 
-        HashMap<String, T> result = new HashMap<>();
-        String beanNameOfType = Apply.beanNameOfClass(type);
-
-        for (BeanDefinition beanDefinition : beanDefinitionMap.values()) {
-            Arrays.stream(beanDefinition.getBeanClass().getInterfaces())
-                    .filter(aClass -> beanNameOfType.equals(Apply.beanNameOfClass(aClass)))
-                    .forEach(aClass -> {
-                        String beanNameOfaClass = Apply.beanNameOfClass(beanDefinition.getBeanClass());
-                        T bean = (T) getBean(beanNameOfaClass, type.getClass());
-                        result.put(beanNameOfaClass, bean);
-                    });
+        Set<Map.Entry<String, BeanDefinition>> entries = beanDefinitionMap.entrySet();
+        for (Map.Entry<String, BeanDefinition> entry : entries) {
+            Class beanClass = entry.getValue().getBeanClass();
+            String beanName = entry.getKey();
+            if (type.isAssignableFrom(beanClass)) {
+                result.put(beanName, (T) getBean(beanName));
+            }
         }
 
         return result;

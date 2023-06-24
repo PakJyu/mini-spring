@@ -8,9 +8,7 @@ import com.pakjyu.springframework.aop.framework.JdkDynamicAopProxy;
 import com.pakjyu.springframework.test.bean.IUserService;
 import com.pakjyu.springframework.test.bean.UserService;
 import com.pakjyu.springframework.test.bean.UserServiceAop;
-import net.sf.cglib.proxy.InvocationHandler;
-import net.sf.cglib.proxy.MethodInterceptor;
-import net.sf.cglib.proxy.Proxy;
+import com.pakjyu.springframework.test.common.UserServiceInterceptor;
 import org.junit.Test;
 
 import java.lang.reflect.Method;

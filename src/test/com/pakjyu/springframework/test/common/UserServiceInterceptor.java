@@ -1,4 +1,4 @@
-package com.pakjyu.springframework.test;
+package com.pakjyu.springframework.test.common;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
